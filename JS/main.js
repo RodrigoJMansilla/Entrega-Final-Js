@@ -115,7 +115,7 @@ function eventosBotonesAddCancel(){
                     localStorage.setItem("Toast", "agregar")
                     localStorage.setItem("Codigo", parseInt(e.target.id))
                     localStorage.setItem("Cantidad", parseFloat(inputNumber.value) )
-                    location.href = "../index.html"
+                    location.href = "index.html"
                 }else{
                     console.warn("No esta agregando una cantidad numerica positiva.")
                     Swal.fire({
