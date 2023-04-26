@@ -1,9 +1,15 @@
 
 // arrays
-//gondola es un array que contiene objetos frutas a vender. Estos objetos tienen nombre, precio/kg, stock en kg e id y ruta con la imagen
+/*
+gondola es un array que contiene objetos frutas a vender. Estos objetos tienen nombre, precio/kg, stock en kg e id y ruta con la imagen
+Aqui se van a alojar los objetos que me provea el servidor.
+*/
 let gondola=[]
 
-//pedidoFrutas este array vacio va a ir agregando objetos de la clase comprarFrutas
+/*
+pedidoFrutas este array vacio va a ir agregando objetos de la clase comprarFrutas
+Este array es sobre el que trabaja el usuario a medida que va haciendo su pedido. Se sincroniza con localStorage.
+*/
 let pedidoFrutas=[]
 
 
@@ -12,11 +18,11 @@ Clase ComprarFrutas
 Esta instancia objetos "Frutas" que van a ser compradas.
 Tiene dos propiedades:
 - codigo (se tiene que corresponder con la propiedad "id" de los objetos literales del array gondola)
-- cantidad (number que define la cantidad comprada de dicha fruta)
+- cantidad (float que define la cantidad comprada de dicha fruta)
 
 tiene dos metodos:
 - consultarPrecio: recupera el precio/kg de la fruta en la gondola y devuelve el precio de la fruta en el pedido (cantidad * precio) Este metodo se utiliza en el siguiente metodo.
-- confirmarAgregado: Este muestra el costo de la cantidad de fruta a comprar y solicita una confirmacion para que la fruta sea agregada al pedido. Una vez confirmado, el metodo envia la instancia de la clase en cuestion (entera) al array que conforma el pedido "pedidoFrutas"
+- confirmarAgregado: Este metodo recibe una instancia de la propia clase como parametro. Se  efectua un find sobre gondola, para averiguar en base al codigo que fruta se esta comprando y por que costo. Esta informacion en las entregas anteriores era utilizada para mostrar un confirm con la fruta y el costo que se procedia a agregar. El confirm en esta entrega se quito y se deja esta informacion, para imprimirse en consola.
 
 */
 
@@ -50,6 +56,7 @@ class comprarFrutas {
     }
 }
 
+
 /*
 Funcion que recibe la respuesta del servidor con el array. Esta funcion necesito que sea accesible para todos los html. Es por ello que queda definida en este js y se hace un return del fetch() para poder manejar efectivamente la promesa en cada html. Tambien por eso envio la url como parametro, ya que en el caso de usar un .json local la url cambia. (esto no es necesario si usamos un servidor externo en donde la url siempre es la msima)
 - se pide el array con fetch
@@ -60,9 +67,7 @@ Funcion que recibe la respuesta del servidor con el array. Esta funcion necesito
 - el catch maneja el error en caso de que no se puedan cargar los elementos de gondola.
 */
 
-
-
-function getGondola(URL){
+async function getGondola(URL){
     return  fetch(URL)
             .then(rta => rta.status === 200 && rta.json())
             .then(data => gondola.push(...data))

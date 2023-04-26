@@ -1,8 +1,5 @@
 
 
-
-
-
 //funcion que recupera una fruta de gondola segun su id. Generalmente se usa enviando un codigo de los objetos instanciados de comprarFruta, para entender que fruta de la gondola es la que esta comprando el usuario en su pedido.
 function recuperaFruta(codigo){
     encontrado = gondola.find((fruta)=>{return fruta.id === codigo})
@@ -11,7 +8,6 @@ function recuperaFruta(codigo){
 
 
 /*Funcion que guarda el array "pedidoFrutas" que contiene la informacion de las frutas a comprar
-- Valido que haya algo en el array "pedidoFrutas"
 - Guardo bajo la clave "pedidoFrutas" el array en localStorage
 */
 function guardoPedido(){
@@ -58,13 +54,12 @@ function capitalize(string){
 
 
 /* 
-Funcion de comprar adaptada, recibe el codigo y la cantidad, requeridos por la clase comprarFrutas. Estos van a provenir del id del boton agregar apretado correspondiente a una fruta, y la cantidad del inputNumber.
+Funcion de comprar, recibe el codigo y la cantidad, requeridos por la clase comprarFrutas. Estos van a provenir del id del boton agregar apretado correspondiente a una fruta, y la cantidad del inputNumber.
 - se genera una instancia de comprarFrutas con estos datos.
 - Se define una band = 0
 - se itera el arreglo pedidoFrutas para verificar el caso en el que la fruta ya haya sido agregada previamente, para ellos se hace un if y se compara el codigo de la instancia nueva, con el codigo de todas las frutas en el arrego.
-    *si hay coincidencia, se cambia band a 1, para tomar el estado de SI, y pregunta al usuario si se desea agregar esto al pedido anterior o no. En este caso no se envia una nueva instancia de comprarFruta al arreglo, sino que se modifican las propiedades de la ya existente
+    *si hay coincidencia, se cambia band a 1, para tomar el estado de SI. En este caso no se envia una nueva instancia de comprarFruta al arreglo, sino que se modifican las propiedades de la ya existente
     *si no hay coincidencia, quiere decir que entonces es una fruta que no habia sido agregada previamente, y se ejecuta el metodo de la clase "confirmarAgregado" que envia la instancia al arreglo pedidoFrutas. 
-
 */
 function compraFruta(codigo, cantidad){
     

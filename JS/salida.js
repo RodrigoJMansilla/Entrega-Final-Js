@@ -3,7 +3,7 @@ const contSalida = document.querySelector("div.contSalida")
 const logo = document.querySelector("div.conLogo img")
 const btnvolver = document.querySelector("button.btnPedido.volver")
 
-//le agrego funcionalidad al boton del index en el logo y un mousemove
+//le agrego funcionalidad al boton del index en el logo y el mousemove
 logo.addEventListener("click", ()=> {
     location.href = "../index.html"
 })
@@ -11,23 +11,24 @@ logo.addEventListener("mousemove",()=>{
     logo.className = "conLogoHover"
 })
 
+// Otra forma de volver al index, con el boton de la derecha
 btnvolver.addEventListener("click", ()=> {
     location.href = "../index.html"
 })
 
 
 
-//Funcion que carga la vista del array pedidoFrutas
+/*
+Funcion que carga la vista del array pedidoFrutas con su respectivo template
+- Reseteo el contenido del div
+- valido el array y cargo los templates en base a los objetos de compra
+- Siempre cargo el template del total y la compra al final, en el mismo div a traves de "cargarTotal() *ver un poco mas abajo"
+*/
 function cargarCompras(array){
     contSalida.innerHTML = "" 
 
-    if(array.length > 0){
-
-        array.forEach((compra)=>{
-            contSalida.innerHTML += templateDivSalida(compra)
-        })
-    }
-
+    array.length > 0 && array.forEach( compra => contSalida.innerHTML += templateDivSalida(compra) )
+    
     cargarTotal()
 }
 
@@ -35,12 +36,13 @@ recuperoPedido()
 
 /*
 Seccion de fetch llamado a la funcion getGondola
-Luego de la respuesta del servidor con el sucesivo manejo del array, con un then me aseguro de cargar los templates y posteriormente esuchar los botones y generar el toast.
+Luego de la respuesta del servidor con el sucesivo manejo del array, con un then me aseguro de cargar los templates y posteriormente esuchar los botones, tanto los de borrar, como el de finalizar la compra.
 */
 
-const URLSALIDA = "../JS/gondola.json"
+const URLSALIDA = "../JS/gondola.json" // URL del .json local referido desde salida.html
+const mockapi = "https://64495f30e7eb3378ca47a505.mockapi.io/fruta" // URL del backend generado por mockapi
 
-getGondola(URLSALIDA).then(() => cargarCompras(pedidoFrutas)).then(() => {
+getGondola(mockapi).then(() => cargarCompras(pedidoFrutas)).then(() => {
                                                         eventoBotonX()
                                                         botonComprar()
                                                         })
@@ -56,11 +58,12 @@ function cargarTotal(){
 
 
 
-/*Funcion eventoBotonX:
-Le da funcionalidad al boton "X" rojo:
+/*
+Funcion eventoBotonX:
+Le da funcionalidad al boton "X" rojo para borrar la fruta de la compra:
 - tomo los botones dentro de un array de nodos
 - itero el array y escucho el click , pasando el obj event, para tomar el id del boton
-- ejecuto la funcion eliminarFruta que quita el objeto compra del array pedidoFrutas, correspondiente a la fruta a eliminar
+- ejecuto la funcion eliminarFruta (*ver siguiente funcion) que quita el objeto compra del array pedidoFrutas, correspondiente a la fruta a eliminar
 */
 function eventoBotonX(){
     const botones = document.querySelectorAll("button.buttonFruta")
@@ -76,16 +79,14 @@ function eventoBotonX(){
 
 }
 
-//activo los botones X llamando a la funcion.
-
 
 /*
 Funcion que elimina una compra del arreglo pedidoFrutas, en base a un objeto fruta:
 - pide como parametro un objeto fruta
 - toma el index del objeto compra correspondiente al objeto fruta por su id, en el array pedidosFruta
-- con este index y el metodo splice, eliminamos la fruta del arrego y ejecutamos "guardoPedido()" para guardarlo nuevamente en storage
-- filamente ejecuto eventoBotonX, para volver a activar los botones resultantes
-
+- alerto de la accion con un pequeño toast rojo generico
+- con este index y el metodo splice, eliminamos la fruta del arreglo y ejecutamos "guardoPedido()" para guardarlo nuevamente en storage
+- finalmente ejecuto eventoBotonX, para volver a activar los botones resultantes
 */
 function eliminarFruta(fruta){
 
@@ -109,9 +110,6 @@ function eliminarFruta(fruta){
 
     pedidoFrutas.splice(index, 1)
 
-
-
-
     cargarCompras(pedidoFrutas)
     guardoPedido()
     eventoBotonX()
@@ -126,14 +124,13 @@ Funcion para darle funcionalidad al boton Comprar:
 - linkeo el boton y el combo
 - escucho el evento click sobre el boton:
 - me fijo el valor del combo para hacer los calculos de cuotas
-- segun el valor de la confirmacion ejecuto la funcion de cierre y doy por finalizada la etapa de compra limpiando el carrito.
+- segun el valor de la confirmacion ejecuto la funcion de cierre y doy por finalizada la etapa de compra limpiando el pedido.
 */
 
 function botonComprar(){
     const combo = document.querySelector("select.selCombo")
     const butComprar = document.querySelector("button.btnPedido.inputSub")
     let total = totalPedido()
-    let rta = false
 
     butComprar.addEventListener("click", ()=> {
         if(pedidoFrutas.length > 0){
@@ -212,13 +209,8 @@ function actualizarStock(arrayVenta){
     })
 }
 
-
-
-
-
-//Pequeña funcion de cierre con un alert y la limpieza del array en el storage
+//Pequeña funcion que efectua la limpieza del array en el storage y la sucesiva redireccion a index.html
 function cierre(){
-    // alert("Se le enviará un Correo con todos los datos de su compra y codigo de seguimiento.\n Gracias por elegirnos!")
     actualizarStock(pedidoFrutas)
     localStorage.removeItem("pedidoFrutas")
     recuperoPedido()

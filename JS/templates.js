@@ -1,4 +1,5 @@
-// Funcion que devuelve el template de cada Card de las frutas.
+// Funcion que devuelve el template de cada Card de las frutas. 
+//Llamada en index.html
 const templateCard = (fruta) => {
     return `<div class="card">
             <img class="imgFruta" src="${fruta.ruta}" alt="imagen de ${fruta.nombre}">
@@ -17,6 +18,7 @@ const templateCard = (fruta) => {
 }
 
 // Funcion que devuelve un template modificado para pasar a una instancia mas avanzada de compra
+// Llamada en index.html
 const templateCardCompra = (fruta) => {
     return `<div class="card cardCompra">
             <img class="imgFruta" src="${fruta.ruta}" alt="imagen de ${fruta.nombre}">
@@ -40,6 +42,7 @@ const templateCardCompra = (fruta) => {
 }
 
 //Este template se corresponde con una vista del arreglo pedidoFrutas con la informacion 
+//Llamada en salida.html
 const templateDivSalida = (compra) => {
     fruta = recuperaFruta(compra.codigo)
     return `<div class="contRow">
@@ -62,6 +65,7 @@ const templateDivSalida = (compra) => {
 }
 
 //Template del ultimo div que contiene la informacion para finalizar la compra
+//Llamada en salida.html
 const templateDivTotal = () => {
     let total = totalPedido()
     return `<div class="contRow contRowPedido">
