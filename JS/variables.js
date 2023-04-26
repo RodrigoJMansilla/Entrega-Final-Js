@@ -1,52 +1,10 @@
-// constantes strings *BORRAR
-const msjMenu =     "Bienvenido a UvaScript! ¿En qué lo podemos ayudar?\n" +
-                    "Ingrese un número:\n" +
-                    "1) Agregar/Modificar frutas a su pedido\n" +
-                    "2) Ver las frutas en su pedido y el costo total del mismo\n" +
-                    "3) Efectuar la compra y terminar con su atención\n"
-
-const msjFrutas =   "Selecciona que fruta desea agregar al pedido:\n" +
-                    "Ingrese un número:\n" +
-                    "1) Banana\n" +
-                    "2) Manzana\n" +
-                    "3) Uvas\n" +
-                    "4) Sandía\n" +
-                    "5) Limón\n" +
-                    "6) Naranja\n"
-
-const msjCuotas =   "Ingrese la cantidad de cuotas en las que desea hacer el pago:\n" +
-                    "3) 20% Recargo\n" + 
-                    "6) 45% Recargo"
 
 // arrays
 //gondola es un array que contiene objetos frutas a vender. Estos objetos tienen nombre, precio/kg, stock en kg e id y ruta con la imagen
-let gondola=[   {id: 1, nombre: 'Banana', precio: 500, stockKg: 100, ruta: "./images/banana-resized.png"},
-                {id: 2, nombre: 'Manzana', precio: 800, stockKg: 150, ruta: "./images/manzanas-resized.png"},
-                {id: 3, nombre: 'Uva', precio: 2100, stockKg: 75, ruta: "./images/uvas-resized.png"},
-                {id: 4, nombre: 'Sandía', precio: 200, stockKg: 200, ruta: "./images/sandias-resized.png"},
-                {id: 5, nombre: 'Limón', precio: 400, stockKg: 120, ruta: "./images/limones-resized.png" },
-                {id: 6, nombre: 'Naranja', precio: 500, stockKg: 140, ruta: "./images/naranjas-resized.png"},
-                {id: 7, nombre: 'Frutilla', precio: 2400, stockKg: 80, ruta: "./images/frutillas-resized.jpg"},
-                {id: 8, nombre: 'Arandanos', precio: 2200, stockKg: 110, ruta: "./images/arandanos-resized.jpg"},
-                {id: 9, nombre: 'Durazno', precio: 750, stockKg: 125, ruta: "./images/durazno-resized.jpg"},
-                {id: 10, nombre: 'Mandarina', precio: 650, stockKg: 95, ruta: "./images/mandarinas-resized.jpg"},
-                {id: 11, nombre: 'Kiwi', precio: 1900, stockKg: 130, ruta: "./images/kiwi-resized.jpg"},
-                {id: 12, nombre: 'Melón', precio: 400, stockKg: 120, ruta: "./images/melones-resized.jpg"}
-                ]
+let gondola=[]
 
 //pedidoFrutas este array vacio va a ir agregando objetos de la clase comprarFrutas
 let pedidoFrutas=[]
-
-//variables *BORRAR
-let iCuotas = 0
-let continuar = true
-let choice = 0
-
-
-
-
-
-
 
 
 /* 
@@ -92,3 +50,32 @@ class comprarFrutas {
     }
 }
 
+/*
+Funcion que recibe la respuesta del servidor con el array. Esta funcion necesito que sea accesible para todos los html. Es por ello que queda definida en este js y se hace un return del fetch() para poder manejar efectivamente la promesa en cada html. Tambien por eso envio la url como parametro, ya que en el caso de usar un .json local la url cambia. (esto no es necesario si usamos un servidor externo en donde la url siempre es la msima)
+- se pide el array con fetch
+- 1er then se asegura de que el estado de la respuesta sea 200 (exitosa) y luego maneja los datos y hace la conversion
+- 2do then carga estos datos en el arreglo gondola que usa el programa
+- 3er then llama a la funcion que desarrolla los templates HTML en base al arreglo gondola.
+- 4to then escucha los botones "comprar" (que requieren que esten cargados los productos de gondola) y generaToast, en caso de que se haya agregado alguna fruta al pedido (tambien requiere que este cargado el arreglo gondola)
+- el catch maneja el error en caso de que no se puedan cargar los elementos de gondola.
+*/
+
+
+
+function getGondola(URL){
+    return  fetch(URL)
+            .then(rta => rta.status === 200 && rta.json())
+            .then(data => gondola.push(...data))
+            .catch(error => {
+                //console.log(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudieron cargar los productos, intente nuevamente mas tarde.',
+                    confirmButtonColor: '#790068',
+                    footer: '<a href="../index.html">Click aquí para intentar de nuevo</a>'
+                })
+                cont.innerHTML = "NO SE PUEDEN CARGAR LOS PRODUCTOS"
+                
+            }) 
+}

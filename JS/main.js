@@ -6,10 +6,15 @@ const cont = document.querySelector("main div.conMain")
 const inputSearch = document.querySelector("input#busqueda")
 const buttonSalida = document.querySelector("button.btnPedido")
 
-
-
-
-
+/*
+Seccion de fetch llamado a la funcion getGondola
+Luego de la respuesta del servidor con el sucesivo manejo del array, con un then me aseguro de cargar los templates y posteriormente esuchar los botones y generar el toast.
+*/
+const URLMAIN = "JS/gondola.json"  // Tomo en URL la direccion de donde voy a hacer el pedido de la gondola
+getGondola(URLMAIN).then(() => cargarFrutas(gondola)).then(() => {
+                                                eventosBotones()
+                                                generaToast()
+                                                })
 
 //le agrego funcionalidad al boton del index en el logo y un mousemove
 logo.addEventListener("click", ()=> {
@@ -141,11 +146,10 @@ function eventosBotonesAddCancel(){
     }
 }
 
-eventosBotones()
 
 recuperoPedido()
 
-generaToast()
+
 
 
 //agrego evento al boton para abrir salida.html

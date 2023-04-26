@@ -32,7 +32,21 @@ function cargarCompras(array){
 }
 
 recuperoPedido()
-cargarCompras(pedidoFrutas)
+
+/*
+Seccion de fetch llamado a la funcion getGondola
+Luego de la respuesta del servidor con el sucesivo manejo del array, con un then me aseguro de cargar los templates y posteriormente esuchar los botones y generar el toast.
+*/
+
+const URLSALIDA = "../JS/gondola.json"
+
+getGondola(URLSALIDA).then(() => cargarCompras(pedidoFrutas)).then(() => {
+                                                        eventoBotonX()
+                                                        botonComprar()
+                                                        })
+
+
+
 
 
 //Funcion que hace la carga del template Total
@@ -63,7 +77,7 @@ function eventoBotonX(){
 }
 
 //activo los botones X llamando a la funcion.
-eventoBotonX()
+
 
 /*
 Funcion que elimina una compra del arreglo pedidoFrutas, en base a un objeto fruta:
@@ -175,7 +189,7 @@ function botonComprar(){
     })
 }
 
-botonComprar()
+
 
 
 
