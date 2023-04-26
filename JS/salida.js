@@ -106,25 +106,52 @@ function botonComprar(){
     butComprar.addEventListener("click", ()=> {
         if(pedidoFrutas.length > 0){
             if(combo.value == "opcion1"){
-                rta = confirm(`¿Confirma su pedido por un total de $${total}?`)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Gracias por su compra!',
+                    text: `Se ha realizado su pedido por un total de $${total}`,
+                    confirmButtonColor: '#790068',
+                }).then(()=>{
+                    cierre()
+                })
+                
             }
 
             if(combo.value == "opcion2"){
                 total = total * 1.2
                 let cuota = total / 3
-                rta = confirm(`¿Confirma su pedido por un total de 3 cuotas de $${cuota}?`)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Gracias por su compra!',
+                    text: `Se ha realizado su pedido por un total de 3 cuotas de $${cuota.toFixed(2)}`,
+                    confirmButtonColor: '#790068',
+                }).then(()=>{
+                    cierre()
+                })
+                
             }
 
             if(combo.value == "opcion3"){
                 total = total * 1.45
                 let cuota = total / 6
-                rta = confirm(`¿Confirma su pedido por un total de 6 cuotas de $${cuota}?`)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Gracias por su compra!',
+                    text: `Se ha realizado su pedido por un total de 6 cuotas de $${cuota.toFixed(2)}`,
+                    confirmButtonColor: '#790068',
+                }).then(()=>{
+                    cierre()
+                })
             }
 
-            if(rta){
-                cierre()
-            }
         }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Su pedido no contiene ninguna fruta.',
+                confirmButtonColor: '#790068',
+                footer: '<a href="../index.html">Click aquí para iniciar su compra</a>'
+              })
             console.warn("El pedido esta vacio.")
         }
     })
@@ -159,11 +186,12 @@ function actualizarStock(arrayVenta){
 
 //Pequeña funcion de cierre con un alert y la limpieza del array en el storage
 function cierre(){
-    alert("Se le enviará un Correo con todos los datos de su compra y codigo de seguimiento.\n Gracias por elegirnos!")
+    // alert("Se le enviará un Correo con todos los datos de su compra y codigo de seguimiento.\n Gracias por elegirnos!")
     actualizarStock(pedidoFrutas)
     localStorage.removeItem("pedidoFrutas")
     recuperoPedido()
-    cargarCompras(pedidoFrutas)
+    cargarCompras(pedidoFrutas) 
+    location.href = "../index.html"   
 }
 
 
