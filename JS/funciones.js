@@ -75,11 +75,7 @@ function compraFruta(codigo, cantidad){
     for(fruta of pedidoFrutas){
         if(fruta.codigo === instancia.codigo){
             band1 = 1
-            if(confirm(`Su pedido ya incluye ${fruta.cantidadKg} Kg de ${recuperaFruta(fruta.codigo).nombre} ¿Desea agregar otros ${instancia.cantidadKg} Kg ?`)){
-                fruta.cantidadKg = parseFloat(fruta.cantidadKg) + parseFloat(instancia.cantidadKg)
-            }else{
-                console.warn("Su pedido no fue modificado.")
-            }
+            fruta.cantidadKg = parseFloat(fruta.cantidadKg) + parseFloat(instancia.cantidadKg)
         }
     }
 

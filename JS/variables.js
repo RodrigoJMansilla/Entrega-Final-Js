@@ -79,15 +79,10 @@ class comprarFrutas {
 
         let costo = this.consultarPrecio()
 
-        let rta = confirm(`¿Usted desea ${this.cantidadKg}Kg de ${coincidencia.nombre} por un costo de $${costo}?`)
-
-        if(rta){
-            pedidoFrutas.push(instanciaActual) // Ahora lo que se va a enviar es la propia instancia recibida como parametro.
-            console.log(`Se agregaron ${this.cantidadKg}Kg de ${coincidencia.nombre} al pedido.`)
-        }
-        else{
-            console.warn("El nuevo pedido fue cancelado.")
-        }
+        
+        pedidoFrutas.push(instanciaActual) // Ahora lo que se va a enviar es la propia instancia recibida como parametro.
+        console.log(`Se agregaron ${this.cantidadKg}Kg de ${coincidencia.nombre} al pedido.`)
+        
     }
 }
 
