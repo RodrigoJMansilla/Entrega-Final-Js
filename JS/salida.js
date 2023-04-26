@@ -79,7 +79,25 @@ function eliminarFruta(fruta){
         return compra.codigo === fruta.id
     })
 
+    let frutaBorrar = recuperaFruta(pedidoFrutas[index].codigo)
+
+    Toastify({
+        text: `Se ha quitado ${frutaBorrar.nombre} de su pedido`,
+        duration: 3000,
+        close: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        style: {
+        background: "#791100",
+        },
+        onClick: function(){} // Callback after click
+    }).showToast();
+
     pedidoFrutas.splice(index, 1)
+
+
+
+
     cargarCompras(pedidoFrutas)
     guardoPedido()
     eventoBotonX()

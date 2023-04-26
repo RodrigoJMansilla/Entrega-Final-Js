@@ -10,6 +10,7 @@ const buttonSalida = document.querySelector("button.btnPedido")
 
 
 
+
 //le agrego funcionalidad al boton del index en el logo y un mousemove
 logo.addEventListener("click", ()=> {
     location.href = "index.html"
@@ -114,7 +115,10 @@ function eventosBotonesAddCancel(){
                 if(!isNaN(parseInt(inputNumber.value))){
                     compraFruta(parseInt(e.target.id), parseFloat(inputNumber.value))
                     guardoPedido()
-                    location.href = "index.html"
+                    localStorage.setItem("Toast", "agregar")
+                    localStorage.setItem("Codigo", parseInt(e.target.id))
+                    localStorage.setItem("Cantidad", parseFloat(inputNumber.value) )
+                    location.href = "../index.html"
                 }else{
                     console.warn("No esta agregando una cantidad numerica.")
                 }
@@ -130,9 +134,9 @@ function eventosBotonesAddCancel(){
 
 eventosBotones()
 
-
-
 recuperoPedido()
+
+generaToast()
 
 
 //agrego evento al boton para abrir salida.html

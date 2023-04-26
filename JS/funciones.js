@@ -96,3 +96,37 @@ function totalPedido(){
 
     return total
 }
+
+
+
+/*
+Funcion generadora de toasts.
+La siguiente funcion es llamada por main.
+Su objetivo es que luego de agregado un producto y el usuario ser redireccionado a index.html, se muestre un toast con informacion sobre el producto agregado al pedido y su cantidad.
+
+Cuando se clickea el boton "agregar" se guarda en localstorage una key "Toast" con el valor "agregar".
+Este fragmento de codigo se fija si esa key existe y de ser asi ejecuta el toast y la resetea con removeItem.
+
+A su vez, antes de hacer el location.href a index cuando se escucha el clickeo del boton "agregar", se alojan el codigo y la cantidad de la fruta agregada a local storage.
+Estos dos son rescatados por este codigo y para mostrar el toast y luego tambien reseteados.
+*/
+
+function generaToast(){
+    let Toast = localStorage.getItem("Toast") || false
+    if (Toast == "agregar"){
+        Toastify({
+            text: `Se han agregado ${parseFloat(localStorage.getItem("Cantidad"))}Kg de ${recuperaFruta(parseInt(localStorage.getItem("Codigo"))).nombre}`,
+            duration: 3000,
+            close: true,
+            gravity: "bottom", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            style: {
+            background: "#007911",
+            },
+            onClick: function(){} // Callback after click
+        }).showToast();
+        localStorage.removeItem("Toast")
+        localStorage.removeItem("Codigo")
+        localStorage.removeItem("Cantidad")
+    }
+}
