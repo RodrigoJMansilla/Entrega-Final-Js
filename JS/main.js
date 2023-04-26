@@ -68,13 +68,14 @@ La siguiente funcion va a manejar las cards en base al boton comprar:
 - recupero la fruta clickeada en base al id del objeto event
 - Ejecuto la funcion cargarFrutasCompra, referida al objeto fruta clickeada para mostrar la card con el input number.
 - Ejecuto la funcion eventosBotonesAddCancel (*ver funcion) que le da funcionalidad a los dos botones.
-- Paralelamente al recorrer el array tambien se agrega el evento mousemove para que aparezca un titulo antes de apretar
+- Paralelamente al recorrer el array de botones tambien se agrega el evento mousemove para que aparezca un titulo antes de apretar
 */
 function eventosBotones(){
     const botones = document.querySelectorAll("button.btnFruta")
 
     for (boton of botones){
 
+        // Escuchado de click en "comprar" -> guardamos el objeto a comrpar, cargamos el template de compra avanzada, y escuchamos los botones
         boton.addEventListener("click", (e)=>{
             let fruta = recuperaFruta(parseInt(e.target.id))
             cargarFrutasCompra(fruta)
@@ -82,7 +83,7 @@ function eventosBotones(){
         })
 
 
-        // Esta parte queda igual, ya que hace referencia al cartelito cuando pasamos el cursor por encima del boton
+        // Escuchado de mousemove, para aplicar un cartelito
         boton.addEventListener("mousemove", (e)=>{
 
             let fruta = recuperaFruta(parseInt(e.target.id))
@@ -93,12 +94,13 @@ function eventosBotones(){
 }
 
 /*
+Funcion de botones addCancel
 Le agrego funcion a los botones "Agregar" y "Cancelar":
 No sabia como diferenciar los botones por su contenido, para ello la solucion que encontre fue asignarlos genericamente con un querySelectorAll
 y luego a traves de la propiedad "e.target.innerText" del objeto event, diferenciarlos.
 - recupero el pedido de local storage
 - Genero array de botones(en este caso son solo 2)
-- Recorro array y comparo con un if el contenido del texto interno del nodo
+- Recorro array, escucho evento "click" y comparo con un if el contenido del texto interno del nodo
 - si es agregar: tomo el inputnumber y llamo a la funcion "compraFruta(target.id, value)" y guardo el arreglo en local storage
 - si es cancelar: refiero a index.html para que se vuelvan a cargar las frutas.
 
@@ -112,7 +114,7 @@ function eventosBotonesAddCancel(){
             
             if(e.target.innerText == "Agregar"){
                 const inputNumber = document.querySelector("input.inputNumber")
-                if(!isNaN(parseInt(inputNumber.value))){
+                if(!isNaN(parseInt(inputNumber.value)) && parseFloat(inputNumber.value) > 0){
                     compraFruta(parseInt(e.target.id), parseFloat(inputNumber.value))
                     guardoPedido()
                     localStorage.setItem("Toast", "agregar")
@@ -120,7 +122,14 @@ function eventosBotonesAddCancel(){
                     localStorage.setItem("Cantidad", parseFloat(inputNumber.value) )
                     location.href = "../index.html"
                 }else{
-                    console.warn("No esta agregando una cantidad numerica.")
+                    console.warn("No esta agregando una cantidad numerica positiva.")
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Debe agregar una cantidad positiva de fruta',
+                        confirmButtonColor: '#790068',
+                        footer: '<a href="../index.html">Click aquí para elegir otra fruta</a>'
+                      })
                 }
             }
 
